@@ -12,10 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BagRouteImport } from './routes/bag'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as InternationalRouteImport } from './routes/international'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ThriftRouteImport } from './routes/thrift'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as OrderTokenRouteImport } from './routes/order.$token'
+import { Route as PoliciesKeyRouteImport } from './routes/policies.$key'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -31,6 +35,21 @@ const BagRoute = BagRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternationalRoute = InternationalRouteImport.update({
+  id: '/international',
+  path: '/international',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -53,6 +72,11 @@ const OrderTokenRoute = OrderTokenRouteImport.update({
   path: '/order/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliciesKeyRoute = PoliciesKeyRouteImport.update({
+  id: '/policies/$key',
+  path: '/policies/$key',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductIdRoute = ProductIdRouteImport.update({
   id: '/product/$id',
   path: '/product/$id',
@@ -63,20 +87,28 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bag': typeof BagRoute
   '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/help': typeof HelpRoute
+  '/international': typeof InternationalRoute
   '/shop': typeof ShopRoute
   '/thrift': typeof ThriftRoute
   '/track': typeof TrackRoute
   '/order/$token': typeof OrderTokenRoute
+  '/policies/$key': typeof PoliciesKeyRoute
   '/product/$id': typeof ProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bag': typeof BagRoute
   '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/help': typeof HelpRoute
+  '/international': typeof InternationalRoute
   '/shop': typeof ShopRoute
   '/thrift': typeof ThriftRoute
   '/track': typeof TrackRoute
   '/order/$token': typeof OrderTokenRoute
+  '/policies/$key': typeof PoliciesKeyRoute
   '/product/$id': typeof ProductIdRoute
 }
 export interface FileRoutesById {
@@ -84,10 +116,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/bag': typeof BagRoute
   '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/help': typeof HelpRoute
+  '/international': typeof InternationalRoute
   '/shop': typeof ShopRoute
   '/thrift': typeof ThriftRoute
   '/track': typeof TrackRoute
   '/order/$token': typeof OrderTokenRoute
+  '/policies/$key': typeof PoliciesKeyRoute
   '/product/$id': typeof ProductIdRoute
 }
 export interface FileRouteTypes {
@@ -96,30 +132,42 @@ export interface FileRouteTypes {
     | '/'
     | '/bag'
     | '/checkout'
+    | '/contact'
+    | '/help'
+    | '/international'
     | '/shop'
     | '/thrift'
     | '/track'
     | '/order/$token'
+    | '/policies/$key'
     | '/product/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/bag'
     | '/checkout'
+    | '/contact'
+    | '/help'
+    | '/international'
     | '/shop'
     | '/thrift'
     | '/track'
     | '/order/$token'
+    | '/policies/$key'
     | '/product/$id'
   id:
     | '__root__'
     | '/'
     | '/bag'
     | '/checkout'
+    | '/contact'
+    | '/help'
+    | '/international'
     | '/shop'
     | '/thrift'
     | '/track'
     | '/order/$token'
+    | '/policies/$key'
     | '/product/$id'
   fileRoutesById: FileRoutesById
 }
@@ -127,10 +175,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BagRoute: typeof BagRoute
   CheckoutRoute: typeof CheckoutRoute
+  ContactRoute: typeof ContactRoute
+  HelpRoute: typeof HelpRoute
+  InternationalRoute: typeof InternationalRoute
   ShopRoute: typeof ShopRoute
   ThriftRoute: typeof ThriftRoute
   TrackRoute: typeof TrackRoute
   OrderTokenRoute: typeof OrderTokenRoute
+  PoliciesKeyRoute: typeof PoliciesKeyRoute
   ProductIdRoute: typeof ProductIdRoute
 }
 
@@ -155,6 +207,27 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/international': {
+      id: '/international'
+      path: '/international'
+      fullPath: '/international'
+      preLoaderRoute: typeof InternationalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -185,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/policies/$key': {
+      id: '/policies/$key'
+      path: '/policies/$key'
+      fullPath: '/policies/$key'
+      preLoaderRoute: typeof PoliciesKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$id': {
       id: '/product/$id'
       path: '/product/$id'
@@ -199,10 +279,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BagRoute: BagRoute,
   CheckoutRoute: CheckoutRoute,
+  ContactRoute: ContactRoute,
+  HelpRoute: HelpRoute,
+  InternationalRoute: InternationalRoute,
   ShopRoute: ShopRoute,
   ThriftRoute: ThriftRoute,
   TrackRoute: TrackRoute,
   OrderTokenRoute: OrderTokenRoute,
+  PoliciesKeyRoute: PoliciesKeyRoute,
   ProductIdRoute: ProductIdRoute,
 }
 export const routeTree = rootRouteImport
