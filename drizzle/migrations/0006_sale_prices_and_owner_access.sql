@@ -1,0 +1,5 @@
+ALTER TABLE public.products ADD COLUMN compare_at_ghs numeric DEFAULT NULL;
+CREATE OR REPLACE FUNCTION public.validate_product_sale() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ BEGIN IF new.compare_at_ghs IS NOT NULL AND (new.compare_at_ghs <= new.price_ghs OR new.compare_at_ghs > 100000) THEN RAISE EXCEPTION 'Original price must exceed current price'; END IF; RETURN new; END $$;
+CREATE TRIGGER product_sale_price BEFORE INSERT OR UPDATE ON public.products FOR EACH ROW EXECUTE FUNCTION public.validate_product_sale();
+CREATE OR REPLACE FUNCTION public.handle_new_user_owner() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF lower(new.email)='bfiahenoo300i@gmail.com' AND new.email_confirmed_at IS NOT NULL THEN INSERT INTO public.user_roles(user_id,role) VALUES(new.id,'admin') ON CONFLICT DO NOTHING; END IF; RETURN new; END $$;
+CREATE TRIGGER on_owner_email_confirmed AFTER UPDATE OF email_confirmed_at ON auth.users FOR EACH ROW EXECUTE FUNCTION public.handle_new_user_owner();

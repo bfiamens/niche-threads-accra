@@ -1,0 +1,17 @@
+import {createFileRoute, Link, useNavigate} from '@tanstack/react-router';
+import {useQuery,useQueryClient} from '@tanstack/react-query';
+import {useState,type FormEvent} from 'react';
+import {z} from 'zod';
+import {supabase} from '@/integrations/supabase/client';
+import {useI18n} from '@/lib/i18n';
+import {Button} from '@/components/ui/button';
+import {field} from '@/components/site';
+import {STYLE_KEYS} from '@/lib/styling';
+import {seo} from '@/lib/seo';
+export const Route=createFileRoute('/account')({head:()=>seo('Your account — Niché','Your Niché profile and style preferences.'),component:Account});
+function Account(){const {locale}=useI18n();const qc=useQueryClient();const nav=useNavigate();const [notice,setNotice]=useState('');
+ const q=useQuery({queryKey:['account'],queryFn:async()=>{const {data}=await supabase.auth.getUser();if(!data.user)return null;const [profile,role]=await Promise.all([supabase.from('profiles').select('*').eq('id',data.user.id).single(),supabase.rpc('has_role',{_user_id:data.user.id,_role:'admin'})]);if(profile.error)throw new Error('Profile could not be loaded.');return {user:data.user,profile:profile.data,admin:role.data===true};}});
+ async function save(e:FormEvent<HTMLFormElement>){e.preventDefault();if(!q.data)return;const f=new FormData(e.currentTarget);const v=z.object({display_name:z.string().trim().max(100),preferred_style:z.enum(STYLE_KEYS)}).safeParse({display_name:f.get('name'),preferred_style:f.get('style')});if(!v.success)return;const {error}=await supabase.from('profiles').update(v.data).eq('id',q.data.user.id);setNotice(error?(locale==='de'?'Speichern fehlgeschlagen.':'Could not save.'):(locale==='de'?'Profil gespeichert.':'Profile saved.'));if(!error)qc.invalidateQueries({queryKey:['account']});}
+ async function signOut(){await qc.cancelQueries();qc.clear();await supabase.auth.signOut();await nav({to:'/auth',replace:true});}
+ return <section className="wrap max-w-[680px] py-16"><h1 className="page-title">{locale==='de'?'Dein Konto':'Your account'}</h1>{q.isPending?<p className="mt-8">{locale==='de'?'Lädt…':'Loading…'}</p>:q.isError?<p role="alert" className="mt-8">{locale==='de'?'Profil konnte nicht geladen werden.':'Profile could not be loaded.'}</p>:!q.data?<Button asChild className="mt-8"><Link to="/auth">{locale==='de'?'Anmelden':'Sign in'}</Link></Button>:<><form key={q.data.user.id} onSubmit={save} className="mt-8 space-y-5"><label className="block text-sm">{locale==='de'?'Anzeigename':'Display name'}<input name="name" maxLength={100} defaultValue={q.data.profile.display_name} className={`${field} mt-2`}/></label><label className="block text-sm">{locale==='de'?'Bevorzugter Stil':'Preferred style'}<select name="style" defaultValue={q.data.profile.preferred_style} className={`${field} mt-2`}>{STYLE_KEYS.map(s=><option key={s}>{s}</option>)}</select></label><Button type="submit">{locale==='de'?'Profil speichern':'Save profile'}</Button>{notice&&<p role="status" className="text-sm">{notice}</p>}</form><div className="mt-8 flex gap-4 border-t pt-6">{q.data.admin&&<Button asChild><Link to="/owner">{locale==='de'?'Inhaberbereich':'Owner area'}</Link></Button>}<Button variant="outline" onClick={signOut}>{locale==='de'?'Abmelden':'Sign out'}</Button></div></>}</section>;
+}

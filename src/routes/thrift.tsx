@@ -5,7 +5,7 @@ import { seo } from "@/lib/seo";
 
 type S = { category?: string; show?: string };
 export const Route = createFileRoute("/thrift")({
-  validateSearch: (s: Record<string, unknown>): S => ({ category: typeof s.category === "string" ? s.category : undefined }),
+  validateSearch: (s: Record<string, unknown>): S => ({ ...(typeof s['category'] === "string" ? { category: s['category'] } : {}) }),
   head: () => seo("The Thrift corner — Niché", "One-of-one pre-loved pieces, each measured, graded and photographed. A small corner of the Niché fashion shop."),
   component: Thrift,
 });

@@ -1,0 +1,10 @@
+CREATE TABLE public.profiles(id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE, display_name text NOT NULL DEFAULT '', preferred_style text NOT NULL DEFAULT 'classic');
+GRANT SELECT, UPDATE ON public.profiles TO authenticated;
+GRANT ALL ON public.profiles TO service_role;
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "own profile read" ON public.profiles FOR SELECT TO authenticated USING(auth.uid()=id);
+CREATE POLICY "own profile edit" ON public.profiles FOR UPDATE TO authenticated USING(auth.uid()=id) WITH CHECK(auth.uid()=id);
+CREATE OR REPLACE FUNCTION public.create_customer_profile() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN INSERT INTO public.profiles(id) VALUES(new.id) ON CONFLICT DO NOTHING; RETURN new; END $$;
+CREATE TRIGGER on_auth_user_created_profile AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION public.create_customer_profile();
+CREATE OR REPLACE FUNCTION public.validate_customer_profile() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ BEGIN IF length(new.display_name)>100 OR new.preferred_style NOT IN ('classic','streetwear','athletic','evening') THEN RAISE EXCEPTION 'invalid_profile'; END IF; RETURN new; END $$;
+CREATE TRIGGER validate_profile BEFORE INSERT OR UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION public.validate_customer_profile();

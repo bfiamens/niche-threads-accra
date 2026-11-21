@@ -41,6 +41,30 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscriptions: {
+        Row: {
+          consent: boolean
+          created_at: string
+          email: string
+          id: string
+          locale: string
+        }
+        Insert: {
+          consent: boolean
+          created_at?: string
+          email: string
+          id?: string
+          locale?: string
+        }
+        Update: {
+          consent?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          locale?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           id: string
@@ -153,6 +177,7 @@ export type Database = {
           arrives: string
           category: string
           color: string
+          compare_at_ghs: number | null
           condition_notes: string
           created_at: string
           description_de: string
@@ -172,11 +197,15 @@ export type Database = {
           sizes: string[]
           sort: number
           stock: number
+          story_de: string
+          story_en: string
+          style_tags: string[]
         }
         Insert: {
           arrives?: string
           category?: string
           color?: string
+          compare_at_ghs?: number | null
           condition_notes?: string
           created_at?: string
           description_de?: string
@@ -196,11 +225,15 @@ export type Database = {
           sizes?: string[]
           sort?: number
           stock?: number
+          story_de?: string
+          story_en?: string
+          style_tags?: string[]
         }
         Update: {
           arrives?: string
           category?: string
           color?: string
+          compare_at_ghs?: number | null
           condition_notes?: string
           created_at?: string
           description_de?: string
@@ -220,6 +253,27 @@ export type Database = {
           sizes?: string[]
           sort?: number
           stock?: number
+          story_de?: string
+          story_en?: string
+          style_tags?: string[]
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          display_name: string
+          id: string
+          preferred_style: string
+        }
+        Insert: {
+          display_name?: string
+          id: string
+          preferred_style?: string
+        }
+        Update: {
+          display_name?: string
+          id?: string
+          preferred_style?: string
         }
         Relationships: []
       }
@@ -269,6 +323,7 @@ export type Database = {
           contact_email: string
           contact_phone: string
           contact_whatsapp: string
+          delivery_options: string[]
           ghana_days: string
           ghana_fee: number
           id: number
@@ -289,6 +344,7 @@ export type Database = {
           contact_email?: string
           contact_phone?: string
           contact_whatsapp?: string
+          delivery_options?: string[]
           ghana_days?: string
           ghana_fee?: number
           id?: number
@@ -309,6 +365,7 @@ export type Database = {
           contact_email?: string
           contact_phone?: string
           contact_whatsapp?: string
+          delivery_options?: string[]
           ghana_days?: string
           ghana_fee?: number
           id?: number
@@ -360,6 +417,10 @@ export type Database = {
       place_order: { Args: { payload: Json }; Returns: Json }
       submit_payment_reference: {
         Args: { _ref: string; _token: string }
+        Returns: undefined
+      }
+      subscribe_newsletter: {
+        Args: { _consent: boolean; _email: string; _locale: string }
         Returns: undefined
       }
     }

@@ -15,7 +15,9 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as InternationalRouteImport } from './routes/international'
+import { Route as OutfitsRouteImport } from './routes/outfits'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as StoriesRouteImport } from './routes/stories'
 import { Route as ThriftRouteImport } from './routes/thrift'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as OrderTokenRouteImport } from './routes/order.$token'
@@ -52,9 +54,19 @@ const InternationalRoute = InternationalRouteImport.update({
   path: '/international',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OutfitsRoute = OutfitsRouteImport.update({
+  id: '/outfits',
+  path: '/outfits',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesRoute = StoriesRouteImport.update({
+  id: '/stories',
+  path: '/stories',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThriftRoute = ThriftRouteImport.update({
@@ -90,7 +102,9 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/international': typeof InternationalRoute
+  '/outfits': typeof OutfitsRoute
   '/shop': typeof ShopRoute
+  '/stories': typeof StoriesRoute
   '/thrift': typeof ThriftRoute
   '/track': typeof TrackRoute
   '/order/$token': typeof OrderTokenRoute
@@ -104,7 +118,9 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/international': typeof InternationalRoute
+  '/outfits': typeof OutfitsRoute
   '/shop': typeof ShopRoute
+  '/stories': typeof StoriesRoute
   '/thrift': typeof ThriftRoute
   '/track': typeof TrackRoute
   '/order/$token': typeof OrderTokenRoute
@@ -119,7 +135,9 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/international': typeof InternationalRoute
+  '/outfits': typeof OutfitsRoute
   '/shop': typeof ShopRoute
+  '/stories': typeof StoriesRoute
   '/thrift': typeof ThriftRoute
   '/track': typeof TrackRoute
   '/order/$token': typeof OrderTokenRoute
@@ -135,7 +153,9 @@ export interface FileRouteTypes {
     | '/contact'
     | '/help'
     | '/international'
+    | '/outfits'
     | '/shop'
+    | '/stories'
     | '/thrift'
     | '/track'
     | '/order/$token'
@@ -149,7 +169,9 @@ export interface FileRouteTypes {
     | '/contact'
     | '/help'
     | '/international'
+    | '/outfits'
     | '/shop'
+    | '/stories'
     | '/thrift'
     | '/track'
     | '/order/$token'
@@ -163,7 +185,9 @@ export interface FileRouteTypes {
     | '/contact'
     | '/help'
     | '/international'
+    | '/outfits'
     | '/shop'
+    | '/stories'
     | '/thrift'
     | '/track'
     | '/order/$token'
@@ -178,7 +202,9 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   HelpRoute: typeof HelpRoute
   InternationalRoute: typeof InternationalRoute
+  OutfitsRoute: typeof OutfitsRoute
   ShopRoute: typeof ShopRoute
+  StoriesRoute: typeof StoriesRoute
   ThriftRoute: typeof ThriftRoute
   TrackRoute: typeof TrackRoute
   OrderTokenRoute: typeof OrderTokenRoute
@@ -230,11 +256,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InternationalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/outfits': {
+      id: '/outfits'
+      path: '/outfits'
+      fullPath: '/outfits'
+      preLoaderRoute: typeof OutfitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories': {
+      id: '/stories'
+      path: '/stories'
+      fullPath: '/stories'
+      preLoaderRoute: typeof StoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/thrift': {
@@ -282,7 +322,9 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   HelpRoute: HelpRoute,
   InternationalRoute: InternationalRoute,
+  OutfitsRoute: OutfitsRoute,
   ShopRoute: ShopRoute,
+  StoriesRoute: StoriesRoute,
   ThriftRoute: ThriftRoute,
   TrackRoute: TrackRoute,
   OrderTokenRoute: OrderTokenRoute,

@@ -16,6 +16,8 @@ import { I18nProvider } from "../lib/i18n";
 import { CartProvider } from "../lib/cart";
 import { SiteHeader, SiteFooter } from "../components/site";
 import { Toaster } from "../components/ui/sonner";
+import { Newsletter } from "../components/newsletter";
+import { supabase } from '@/integrations/supabase/client';
 
 function NotFoundComponent() {
   return (
@@ -125,6 +127,15 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange(event => {
+      if (!['SIGNED_IN', 'SIGNED_OUT', 'USER_UPDATED'].includes(event)) return;
+      router.invalidate();
+      if (event !== 'SIGNED_OUT') queryClient.invalidateQueries();
+    });
+    return () => data.subscription.unsubscribe();
+  }, [router, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -135,6 +146,7 @@ function RootComponent() {
           <main className="min-h-[60vh]">
             <Outlet />
           </main>
+          <Newsletter />
           <SiteFooter />
           <Toaster position="bottom-center" />
         </CartProvider>

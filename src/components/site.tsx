@@ -4,24 +4,30 @@ import { useI18n, type TKey } from "@/lib/i18n";
 import { useCart } from "@/lib/cart";
 import { money, productName, type Product } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { UserRound, ShoppingBag } from 'lucide-react';
+import { Price } from '@/components/price';
 
 export function LangSwitch({ className }: { className?: string }) {
   const { locale, setLocale, t } = useI18n();
   return (
     <div className={cn("flex items-center gap-1 text-sm", className)} role="group" aria-label={t("language")}>
       {(["en", "de"] as const).map((l) => (
-        <button key={l} type="button" onClick={() => setLocale(l)} aria-pressed={locale === l}
+        <Button key={l} variant="ghost" type="button" onClick={() => setLocale(l)} aria-pressed={locale === l}
           className={cn("rounded-full px-2.5 py-1 uppercase", locale === l ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>
           {l}
-        </button>
+        </Button>
       ))}
     </div>
   );
 }
 
 export function SiteHeader() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { count } = useCart();
+  const account = useQuery({ queryKey: ['session-identity'], queryFn: async () => (await supabase.auth.getUser()).data.user });
   const nav: [string, TKey][] = [["/shop", "nav_shop"], ["/thrift", "nav_thrift"], ["/help", "nav_help"]];
   return (
     <>
@@ -35,10 +41,12 @@ export function SiteHeader() {
                 {t(k)}
               </Link>
             ))}
+            <Link to="/outfits" className="whitespace-nowrap text-muted-foreground hover:text-foreground" activeProps={{className:'text-foreground'}}>{locale==='de'?'Outfits & Pakete':'Outfits & packages'}</Link>
           </nav>
           <div className="flex items-center gap-3">
             <LangSwitch className="hidden sm:flex" />
-            <Link to="/bag" className="whitespace-nowrap text-[15px]">{t("bag")} ({count})</Link>
+            <Button asChild variant="ghost" size="icon"><Link to={account.data ? '/account' : '/auth'} aria-label={locale==='de'?'Konto':'Account'} title={locale==='de'?'Konto':'Account'}><UserRound/></Link></Button>
+            <Link to="/bag" className="flex items-center gap-2 whitespace-nowrap text-[15px]"><ShoppingBag className="size-4"/>{t("bag")} ({count})</Link>
           </div>
         </div>
       </header>
@@ -50,7 +58,7 @@ export function SiteFooter() {
   const { t } = useI18n();
   const col = "flex flex-col gap-2 text-sm text-muted-foreground [&_a:hover]:text-foreground";
   return (
-    <footer className="mt-24 bg-secondary py-14">
+    <footer className="bg-secondary py-14">
       <div className="wrap grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <div className="font-serif text-[32px] leading-none">Niché</div>
@@ -58,10 +66,11 @@ export function SiteFooter() {
           <LangSwitch className="mt-4" />
         </div>
         <div className={col}><p className="font-medium text-foreground">{t("foot_shop")}</p>
-          <Link to="/shop">{t("nav_shop")}</Link><Link to="/thrift">{t("nav_thrift")}</Link><Link to="/international">{t("abroad_link")}</Link></div>
+          <Link to="/shop">{t("nav_shop")}</Link><Link to="/thrift">{t("nav_thrift")}</Link><Link to="/outfits">Outfits</Link><Link to="/international">{t("abroad_link")}</Link></div>
         <div className={col}><p className="font-medium text-foreground">{t("foot_help")}</p>
           <Link to="/track">{t("nav_track")}</Link><Link to="/help">{t("nav_help")}</Link><Link to="/contact">{t("contact_us")}</Link></div>
         <div className={col}><p className="font-medium text-foreground">{t("foot_company")}</p>
+          <Link to="/stories">{t('owner')==='Owner area'?'Product stories':'Produktgeschichten'}</Link><Link to="/owner">{t('owner')}</Link>
           {(["about", "delivery", "returns", "privacy", "terms"] as const).map((k) => (
             <Link key={k} to="/policies/$key" params={{ key: k }}>{t(`p_${k}` as TKey)}</Link>
           ))}
@@ -87,8 +96,9 @@ export function ProductCard({ p }: { p: Product }) {
       </div>
       <div className="flex justify-between gap-3 pt-3.5 text-[15px]">
         <span className="font-medium">{productName(p, locale)}</span>
-        <span>{money(p.price_ghs)}</span>
+        <Price current={Number(p.price_ghs)} original={p.compare_at_ghs === null ? null : Number(p.compare_at_ghs)} />
       </div>
+      {p.needs_review && <p className="mt-1 text-xs text-muted-foreground">{locale==='de'?'Musterstück · Details noch nicht bestätigt':'Preview piece · details not yet confirmed'}</p>}
     </Link>
   );
 }
@@ -116,7 +126,7 @@ export function LoadError({ onRetry }: { onRetry: () => void }) {
   return (
     <div className="my-8">
       <p className="text-muted-foreground">{t("load_error")}</p>
-      <button onClick={onRetry} className="mt-3 text-sm underline">{t("retry")}</button>
+      <Button variant="link" onClick={onRetry} className="mt-3 px-0 text-sm underline">{t("retry")}</Button>
     </div>
   );
 }

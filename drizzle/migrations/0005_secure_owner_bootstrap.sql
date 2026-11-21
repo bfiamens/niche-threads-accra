@@ -1,0 +1,1 @@
+CREATE OR REPLACE FUNCTION public.handle_new_user_owner() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN RETURN new; END $$;

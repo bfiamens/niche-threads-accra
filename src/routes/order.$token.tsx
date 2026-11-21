@@ -14,7 +14,7 @@ type OrderView = {
 };
 
 export const Route = createFileRoute("/order/$token")({
-  validateSearch: (s: Record<string, unknown>): { new?: boolean } => ({ new: s.new === true || s.new === "true" ? true : undefined }),
+  validateSearch: (s: Record<string, unknown>): { new?: boolean } => (s['new'] === true || s['new'] === "true" ? { new: true } : {}),
   head: () => ({ meta: [
     { title: "Your order — Niché" }, { name: "description", content: "Order status and payment instructions." },
     { property: "og:title", content: "Your order — Niché" }, { property: "og:description", content: "Order status and payment instructions." },

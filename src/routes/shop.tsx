@@ -6,8 +6,8 @@ import { seo } from "@/lib/seo";
 type S = { category?: string; show?: string };
 export const Route = createFileRoute("/shop")({
   validateSearch: (s: Record<string, unknown>): S => ({
-    category: typeof s.category === "string" ? s.category : undefined,
-    show: s.show === "new" || s.show === "thrift" ? s.show : undefined,
+    ...(typeof s['category'] === "string" ? { category: s['category'] } : {}),
+    ...(s['show'] === "new" || s['show'] === "thrift" ? { show: s['show'] } : {}),
   }),
   head: () => seo("Shop the collection — Niché", "Tops, bottoms, shoes and accessories, priced in Ghana cedis and delivered across Ghana."),
   component: Shop,
