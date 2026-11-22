@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application architecture
+- Keep styling suggestions deterministic and stock-aware in the shared styling module; never present pre-orders as ready-to-wear stock.
+- Store original sale prices separately from current prices; order totals always use current database prices.
+- Owner mutations use authenticated server functions with a server-side role check; customer profiles never contain roles.
+- Newsletter collection stores explicit consent through a validated database function; sending campaigns requires a dedicated marketing service.
+- Enforce launch checkout gates and ordered-size validation in database triggers so direct RPC calls cannot bypass storefront restrictions.

@@ -8,6 +8,7 @@ import { checkoutReady, hasBank, hasMomo, money, productName, productsQuery, set
 import { btn, field, LoadError } from "@/components/site";
 import { seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button';
 
 export const GH_REGIONS = ["Ashanti", "Greater Accra", "Ahafo", "Bono", "Bono East", "Central", "Eastern", "North East", "Northern", "Oti", "Savannah", "Upper East", "Upper West", "Volta", "Western", "Western North"];
 
@@ -55,7 +56,7 @@ function Checkout() {
     const { data, error } = await supabase.rpc("place_order", {
       payload: {
         customer_name: v("customer_name"), phone: v("phone"), email: v("email"), region: v("region"), city: v("city"),
-        address: v("address"), note: v("note"), zone, payment_method: method, locale,
+        address: v("address"), note: [v("note"),v('delivery_preference')&&`Delivery preference: ${v('delivery_preference')}`].filter(Boolean).join('\n'), zone, payment_method: method, locale,
         items: cart.lines.map((l) => ({ product_id: l.productId, size: l.size, qty: l.qty })),
       },
     });
@@ -103,6 +104,7 @@ function Checkout() {
             </div>
             <input name="address" className={field} placeholder={t("address")} aria-label={t("address")} required />
             <textarea name="note" rows={2} className={cn(field, "h-auto py-3")} placeholder={t("order_note")} aria-label={t("order_note")} />
+            {s.delivery_options.length>0&&<label className="text-sm">{locale==='de'?'Gewünschte Lieferung':'Preferred delivery'}<select name="delivery_preference" className={`${field} mt-2`}><option value="">{locale==='de'?'Bitte vereinbaren':'Arrange with me'}</option>{s.delivery_options.filter(d=>zone==='kumasi'||d==='courier').map(d=><option key={d} value={d}>{d==='personal'?(locale==='de'?'Persönliche Lieferung · Kumasi / KNUST':'Personal delivery · Kumasi / KNUST'):d==='ride'?(locale==='de'?'Fahrt vereinbaren':'Arrange a ride'):(locale==='de'?'Kurier':'Courier')}</option>)}</select></label>}
           </div>
           <p className="mt-3 text-sm text-muted-foreground">{t("abroad_q")} <Link to="/international" className="underline">{t("abroad_link")}</Link></p>
           <h2 className="mt-10 text-[22px]">{t("payment")}</h2>
@@ -128,7 +130,7 @@ function Checkout() {
           </div>
           <p className="mt-3 flex justify-between border-t border-border pt-4 text-[19px] font-medium"><span>{t("total")}</span><span>{money(subtotal + fee)}</span></p>
           {err && <p role="alert" className="mt-4 text-sm text-destructive">{err} {err === t("err_stock") && <Link to="/bag" className="underline">{t("bag")}</Link>}</p>}
-          <button type="submit" disabled={busy} className={cn(btn, "mt-6 w-full")}>{busy ? t("placing") : t("place_order")}</button>
+          <Button type="submit" disabled={busy} className={cn(btn, "mt-6 w-full")}>{busy ? t("placing") : t("place_order")}</Button>
         </aside>
       </form>
     </section>

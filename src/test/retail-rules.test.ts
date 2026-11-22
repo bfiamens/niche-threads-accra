@@ -3,7 +3,7 @@ import { buildLook, lookTotal, salesSummary } from '@/lib/styling';
 import { checkoutReady, type Product, type Settings } from '@/lib/store';
 
 const product = (id: string, category: string, overrides: Partial<Product> = {}): Product => ({
- id, category, name_en: id, name_de:'', description_en:'', description_de:'', section:'Men', kind:'new', grade:'New', condition_notes:'', color:'', price_ghs:100, sizes:['M'], stock:1, measurements:'', image_url:'', preorder:false, arrives:'', published:true, needs_review:true, sort:0, created_at:'', story_en:'', story_de:'', style_tags:[], ...overrides,
+ id, category, name_en: id, name_de:'', description_en:'', description_de:'', section:'Men', kind:'new', grade:'New', condition_notes:'', color:'', price_ghs:100, compare_at_ghs:null, sizes:['M'], stock:1, measurements:'', image_url:'', preorder:false, arrives:'', published:true, needs_review:true, sort:0, created_at:'', story_en:'', story_de:'', style_tags:[], ...overrides,
 });
 describe('Niché retail rules', () => {
  it('never suggests sold-out pieces', () => expect(buildLook([product('sold','Tops',{stock:0})], 'classic')).toEqual([]));

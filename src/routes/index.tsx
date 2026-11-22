@@ -22,23 +22,22 @@ function Home() {
     .filter(([, p]) => p);
   return (
     <>
-      <section className="wrap grid items-center gap-8 pt-10 md:grid-cols-2 md:gap-20">
-        <div>
-          <p className="mb-3.5 text-sm text-muted-foreground">{t("hero_eyebrow")}</p>
-          <h1 className="whitespace-pre-line text-[clamp(40px,6vw,76px)]">{t("hero_title")}</h1>
-          <p className="mt-5 max-w-[520px] text-lg leading-relaxed text-muted-foreground">{t("hero_lead")}</p>
+      <section className="relative min-h-[530px] overflow-hidden bg-primary md:min-h-[580px]">
+        <img src={hero.url} alt="Niché collection" className="absolute inset-0 h-full w-full object-cover object-[center_16%]" />
+        <div className="absolute inset-0 bg-primary/40" />
+        <div className="wrap relative flex min-h-[530px] flex-col justify-end py-12 text-primary-foreground md:min-h-[580px] md:py-16">
+          <p className="mb-3.5 text-sm">{t("hero_eyebrow")}</p>
+          <h1 className="font-serif text-7xl md:text-8xl">Niché</h1>
+          <p className="mt-5 max-w-[480px] text-lg leading-relaxed">{t("hero_lead")}</p>
           <div className="mt-8 flex flex-wrap items-center gap-7">
-            <Link to="/shop" className={btn}>{t("shop_now")}</Link>
-            <Link to="/thrift" className={textLink}>{t("visit_thrift")}</Link>
+            <Link to="/shop" className="inline-flex h-12 items-center rounded-md bg-background px-6 text-sm text-foreground">{t("shop_now")}</Link>
+            <Link to="/outfits" className="border-b border-primary-foreground pb-1 text-sm">{t('owner')==='Owner area'?'Find your look':'Deinen Look finden'}</Link>
           </div>
-        </div>
-        <div className="aspect-square overflow-hidden rounded-[14px] bg-accent">
-          <img src={hero.url} alt="" className="h-full w-full object-cover object-[center_16%]" />
         </div>
       </section>
 
       <section className="wrap pt-14 md:pt-20">
-        <div className="flex items-baseline justify-between gap-4"><h2 className="text-[clamp(30px,4vw,40px)]">{t("new_in")}</h2><Link to="/shop" className={textLink}>{t("view_all")}</Link></div>
+        <div className="flex items-baseline justify-between gap-4"><h2 className="text-3xl md:text-4xl">{t("new_in")}</h2><Link to="/shop" className={textLink}>{t("view_all")}</Link></div>
         {q.isPending ? <GridSkeleton /> : q.isError ? <LoadError onRetry={() => q.refetch()} /> : <ProductGrid products={fresh} />}
       </section>
 
@@ -48,7 +47,7 @@ function Home() {
           <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
             {cats.map(([c, p]) => (
               <Link key={c} to="/shop" search={{ category: c }} className="relative block aspect-[4/5] overflow-hidden rounded-[10px] bg-secondary">
-                <img src={p!.image_url} alt="" className="h-full w-full object-contain p-[12%]" />
+                <img src={p?.image_url} alt="" className="h-full w-full object-contain p-[12%]" />
                 <span className="absolute bottom-3 left-3 rounded-full bg-background px-3 py-1 text-sm font-medium">{t(c as TKey)}</span>
               </Link>
             ))}

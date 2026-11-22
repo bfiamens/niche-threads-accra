@@ -50,6 +50,13 @@
       "when": 1795226005837,
       "tag": "0006_sale_prices_and_owner_access",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795313551758,
+      "tag": "0007_launch_order_and_form_validation",
+      "breakpoints": true
     }
   ]
 }

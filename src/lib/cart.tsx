@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { z } from 'zod';
 
 export type CartLine = { productId: string; size: string; qty: number };
 type CartCtx = {
@@ -19,7 +20,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(KEY);
-      if (raw) setLines(JSON.parse(raw));
+      if (raw) {
+        const parsed = z.array(z.object({productId:z.string().min(1).max(80),size:z.string().max(20),qty:z.number().int().min(1).max(20)})).max(100).safeParse(JSON.parse(raw));
+        if(parsed.success) setLines(parsed.data);
+      }
     } catch { /* ignore broken storage */ }
     setReady(true);
   }, []);

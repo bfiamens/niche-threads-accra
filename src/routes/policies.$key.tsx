@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useI18n, type TKey } from "@/lib/i18n";
 import { settingsQuery, type Policies, type PolicyKey } from "@/lib/store";
 import { seo } from "@/lib/seo";
-export const Route = createFileRoute("/policies/$key")({ head: () => seo("Policies — Niché", "Delivery, returns, privacy and terms of sale at Niché."), component: Policy });
+export const Route = createFileRoute("/policies/$key")({ head: ({params}) => seo(`${params.key==='about'?'About Niché':params.key.charAt(0).toUpperCase()+params.key.slice(1)} — Niché`, `Read Niché’s ${params.key} information before ordering.`), component: Policy });
 function Policy() {
   const { key } = Route.useParams(); const { t, locale } = useI18n();
   const s = useQuery(settingsQuery).data;
