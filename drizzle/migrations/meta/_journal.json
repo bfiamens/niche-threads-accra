@@ -64,6 +64,13 @@
       "when": 1795560591523,
       "tag": "0008_restrict_store_settings_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1795561255362,
+      "tag": "0009_add_social_contacts",
+      "breakpoints": true
     }
   ]
 }

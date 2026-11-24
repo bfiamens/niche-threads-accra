@@ -31,9 +31,15 @@ function Contact() {
         <textarea key={bag} name="message" required maxLength={5000} defaultValue={bag?`${locale==='de'?'Meine Tasche':'My bag'}:\n${bag}\n\n`:''} rows={5} className={`${field} h-auto py-3`} placeholder={t("message")} aria-label={t("message")} />
         {s&&s.delivery_options.length>0&&<label className="text-sm">{locale==='de'?'Gewünschte Lieferung':'Preferred delivery'}<select name="delivery" className={`${field} mt-2`}><option value="">{locale==='de'?'Bitte mit mir vereinbaren':'Arrange with me'}</option>{s.delivery_options.map(d=><option key={d} value={d}>{d==='personal'?(locale==='de'?'Persönliche Lieferung · Kumasi / KNUST':'Personal delivery · Kumasi / KNUST'):d==='ride'?(locale==='de'?'Fahrt vereinbaren · Kumasi / KNUST':'Arrange a ride · Kumasi / KNUST'):(locale==='de'?'Kurier':'Courier')}</option>)}</select></label>}
       </SimpleForm>
-      {s && (s.contact_phone || s.contact_whatsapp || s.contact_email) && (
-        <div className="mt-8 text-sm text-muted-foreground"><p className="font-medium text-foreground">{t("reach_us")}</p>
-          {s.contact_phone && <p>{s.contact_phone}</p>}{s.contact_whatsapp && <p>WhatsApp: {s.contact_whatsapp}</p>}{s.contact_email && <p>{s.contact_email}</p>}</div>
+      {s && (s.contact_phone || s.contact_whatsapp || s.contact_email || s.contact_instagram || s.contact_snapchat) && (
+        <div className="mt-8 text-sm"><p className="font-medium">{t("reach_us")}</p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            {s.contact_whatsapp && <a className="rounded-full border border-border px-4 py-2 hover:bg-secondary" target="_blank" rel="noopener noreferrer" href={`https://wa.me/${s.contact_whatsapp.replace(/\D/g,'').replace(/^0/,'233')}`}>WhatsApp</a>}
+            {s.contact_instagram && <a className="rounded-full border border-border px-4 py-2 hover:bg-secondary" target="_blank" rel="noopener noreferrer" href={`https://instagram.com/${encodeURIComponent(s.contact_instagram)}`}>Instagram</a>}
+            {s.contact_snapchat && <a className="rounded-full border border-border px-4 py-2 hover:bg-secondary" target="_blank" rel="noopener noreferrer" href={`https://snapchat.com/add/${encodeURIComponent(s.contact_snapchat)}`}>Snapchat</a>}
+            {s.contact_email && <a className="rounded-full border border-border px-4 py-2 hover:bg-secondary" href={`mailto:${s.contact_email}`}>{locale==='de'?'E-Mail':'Email'}</a>}
+            {s.contact_phone && <a className="rounded-full border border-border px-4 py-2 hover:bg-secondary" href={`tel:${s.contact_phone.replace(/\s/g,'')}`}>{locale==='de'?'Anrufen':'Call'}</a>}
+          </div></div>
       )}
     </section>
   );

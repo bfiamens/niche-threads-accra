@@ -69,7 +69,7 @@ function OrderPage() {
   const stepIdx = STEPS.indexOf(o.status);
   return (
     <section className="wrap max-w-[800px] pt-14 md:pt-20">
-      <p className="mb-3 text-sm text-muted-foreground">{t("order_title")} #{o.order_no}</p>
+      <div className="mb-3 flex items-center justify-between gap-4"><p className="text-sm text-muted-foreground">{t("order_title")} #{o.order_no} · {new Date(o.created_at).toLocaleDateString()}</p><button type="button" onClick={() => window.print()} className="print:hidden rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary">{t("order_title")==="Order"?"Download receipt":"Beleg herunterladen"}</button></div>
       <h1 className="page-title">{isNew ? t("thanks") : t(`st_${o.status}` as TKey)}</h1>
       {isNew && <p className="mt-4 text-muted-foreground">{t("save_link")}</p>}
 
@@ -104,7 +104,7 @@ function OrderPage() {
           </dl>
           {!showMomo && !showBank && s && <p className="mt-4 text-sm">{t("pay_details_missing")}</p>}
           {o.status === "awaiting_payment" ? (
-            <form onSubmit={submitRef} className="mt-6 grid gap-3">
+            <form data-x=""  onSubmit={submitRef} className="mt-6 grid gap-3">
               <label className="text-sm font-medium" htmlFor="ref">{t("sent_payment")}</label>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input id="ref" name="ref" className={field} placeholder={t("tx_ref")} />
@@ -126,7 +126,7 @@ function OrderPage() {
         </div>
         <p className="mt-3 flex justify-between border-t border-border pt-4 text-[19px] font-medium"><span>{t("total")}</span><span>{money(o.total)}</span></p>
       </div>
-      <div className="mt-8 flex flex-wrap gap-6 text-sm"><Link to="/contact" className="underline">{t("contact_us")}</Link><Link to="/shop" className="underline">{t("keep_shopping")}</Link></div>
+      <div className="print:hidden mt-8 flex flex-wrap gap-6 text-sm"><Link to="/contact" className="underline">{t("contact_us")}</Link><Link to="/shop" className="underline">{t("keep_shopping")}</Link></div>
     </section>
   );
 }

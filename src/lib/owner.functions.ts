@@ -29,13 +29,13 @@ export const updateOrder=createServerFn({method:'POST'}).middleware([requireSupa
 });
 
 const text=z.string().trim().max(400);
-const settingsSchema=z.object({momo_number:text,momo_name:text,momo_network:text,bank_name:text,bank_account_name:text,bank_account_number:text,contact_phone:text,contact_whatsapp:text,contact_email:z.union([z.literal(''),z.string().email().max(254)]),address:text,kumasi_fee:z.number().min(0).max(10000),ghana_fee:z.number().min(0).max(10000),kumasi_days:text,ghana_days:text,checkout_open:z.boolean(),delivery_options:z.array(z.enum(['personal','ride','courier'])).max(3),policies:z.record(z.enum(['about','delivery','returns','privacy','terms']),z.object({en:z.string().max(10000),de:z.string().max(10000)}))});
+const settingsSchema=z.object({momo_number:text,momo_name:text,momo_network:text,bank_name:text,bank_account_name:text,bank_account_number:text,contact_phone:text,contact_whatsapp:text,contact_instagram:text,contact_snapchat:text,contact_email:z.union([z.literal(''),z.string().email().max(254)]),address:text,kumasi_fee:z.number().min(0).max(10000),ghana_fee:z.number().min(0).max(10000),kumasi_days:text,ghana_days:text,checkout_open:z.boolean(),delivery_options:z.array(z.enum(['personal','ride','courier'])).max(3),policies:z.record(z.enum(['about','delivery','returns','privacy','terms']),z.object({en:z.string().max(10000),de:z.string().max(10000)}))});
 export const saveSettings=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(input=>settingsSchema.parse(input)).handler(async({data,context})=>{
  const {data:admin}=await context.supabase.rpc('has_role',{_user_id:context.userId,_role:'admin'});if(!admin)throw new Error('Owner access required.');
  if(data.checkout_open){
   const {count,error}=await context.supabase.from('products').select('id',{count:'exact',head:true}).eq('published',true).eq('needs_review',true);
   if(error||count)throw new Error('Review published sample products before opening checkout.');
-  if(!(data.momo_number||data.bank_name&&data.bank_account_number)||!data.contact_phone&&!data.contact_whatsapp&&!data.contact_email)throw new Error('Add payment and contact details before opening checkout.');
+  if(!(data.momo_number||data.bank_name&&data.bank_account_number)||!data.contact_phone&&!data.contact_whatsapp&&!data.contact_email&&!data.contact_instagram&&!data.contact_snapchat)throw new Error('Add payment and contact details before opening checkout.');
   if((['about','delivery','returns','privacy','terms'] as const).some(k=>!data.policies[k]?.en?.trim()||!data.policies[k]?.de?.trim()))throw new Error('Complete the English and German policies before opening checkout.');
  }
  const {error}=await context.supabase.from('store_settings').update(data).eq('id',1);if(error)throw new Error('Settings could not be saved.');return {ok:true};

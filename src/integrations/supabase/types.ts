@@ -321,7 +321,9 @@ export type Database = {
           bank_name: string
           checkout_open: boolean
           contact_email: string
+          contact_instagram: string
           contact_phone: string
+          contact_snapchat: string
           contact_whatsapp: string
           delivery_options: string[]
           ghana_days: string
@@ -342,7 +344,9 @@ export type Database = {
           bank_name?: string
           checkout_open?: boolean
           contact_email?: string
+          contact_instagram?: string
           contact_phone?: string
+          contact_snapchat?: string
           contact_whatsapp?: string
           delivery_options?: string[]
           ghana_days?: string
@@ -363,7 +367,9 @@ export type Database = {
           bank_name?: string
           checkout_open?: boolean
           contact_email?: string
+          contact_instagram?: string
           contact_phone?: string
+          contact_snapchat?: string
           contact_whatsapp?: string
           delivery_options?: string[]
           ghana_days?: string

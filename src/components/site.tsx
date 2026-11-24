@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import { useI18n, type TKey } from "@/lib/i18n";
 import { useCart } from "@/lib/cart";
@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { UserRound, ShoppingBag } from 'lucide-react';
+import { UserRound, ShoppingBag, ArrowLeft } from 'lucide-react';
 import { Price } from '@/components/price';
 
 export function LangSwitch({ className }: { className?: string }) {
@@ -28,13 +28,14 @@ export function SiteHeader() {
   const { t, locale } = useI18n();
   const { count } = useCart();
   const account = useQuery({ queryKey: ['session-identity'], queryFn: async () => (await supabase.auth.getUser()).data.user });
+  const router = useRouter(); const path = useLocation({ select: (l) => l.pathname });
   const nav: [string, TKey][] = [["/shop", "nav_shop"], ["/thrift", "nav_thrift"], ["/help", "nav_help"]];
   return (
     <>
-      <div className="bg-primary px-3 py-2 text-center text-xs tracking-wide text-primary-foreground">{t("topbar")}</div>
-      <header className="sticky top-0 z-10 border-b border-border bg-background">
+      <div className="print:hidden bg-primary px-3 py-2 text-center text-xs tracking-wide text-primary-foreground">{t("topbar")}</div>
+      <header className="print:hidden sticky top-0 z-10 border-b border-border bg-background">
         <div className="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-3 md:h-[72px] md:flex-nowrap md:py-0">
-          <Link to="/" className="font-serif text-[32px] leading-none">Niché</Link>
+          <div className="flex items-center gap-1">{path !== "/" && <Button variant="ghost" size="icon" type="button" onClick={() => (window.history.length > 1 ? router.history.back() : router.navigate({ to: "/" }))} aria-label={locale==='de'?'Zurück':'Back'} title={locale==='de'?'Zurück':'Back'}><ArrowLeft/></Button>}<Link to="/" className="font-serif text-[32px] leading-none">Niché</Link></div>
           <nav className="order-3 flex w-full gap-6 overflow-x-auto text-[15px] md:order-none md:w-auto">
             {nav.map(([to, k]) => (
               <Link key={to} to={to} className="whitespace-nowrap text-muted-foreground hover:text-foreground" activeProps={{ className: "!text-foreground" }}>
@@ -58,7 +59,7 @@ export function SiteFooter() {
   const { t } = useI18n();
   const col = "flex flex-col gap-2 text-sm text-muted-foreground [&_a:hover]:text-foreground";
   return (
-    <footer className="bg-secondary py-14">
+    <footer className="print:hidden bg-secondary py-14">
       <div className="wrap grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <div className="font-serif text-[32px] leading-none">Niché</div>

@@ -55,7 +55,7 @@ export function setupGaps(s: Settings, needsReview: number) {
   const gaps: string[] = [];
   if (!hasMomo(s) && !hasBank(s)) gaps.push("Add your Mobile Money number and/or bank account (Settings).");
   if (Number(s.kumasi_fee) <= 0 || Number(s.ghana_fee) <= 0) gaps.push("Set the delivery fees for Kumasi/KNUST and the rest of Ghana (Settings).");
-  if (!s.contact_phone && !s.contact_whatsapp && !s.contact_email) gaps.push("Add at least one contact: phone, WhatsApp or email (Settings).");
+  if (!s.contact_phone && !s.contact_whatsapp && !s.contact_email && !s.contact_instagram && !s.contact_snapchat) gaps.push("Add at least one contact: phone, WhatsApp, Instagram, Snapchat or email (Settings).");
   const pol = (s.policies ?? {}) as Policies;
   for (const k of POLICY_KEYS) for (const locale of ['en','de'] as const) if (!pol[k]?.[locale]?.trim()) gaps.push(`Write the “${k}” page in ${locale==='en'?'English':'German'} (Policies).`);
   if (needsReview > 0) gaps.push(`${needsReview} product(s) still carry sample prices/details — review each and untick “needs review” (Products).`);

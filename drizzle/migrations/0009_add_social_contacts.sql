@@ -1,0 +1,1 @@
+ALTER TABLE public.store_settings ADD COLUMN IF NOT EXISTS contact_instagram text NOT NULL DEFAULT '', ADD COLUMN IF NOT EXISTS contact_snapchat text NOT NULL DEFAULT '';
