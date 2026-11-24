@@ -407,6 +407,7 @@ export type Database = {
         Returns: string
       }
       get_order: { Args: { _token: string }; Returns: Json }
+      get_store_settings: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

@@ -37,9 +37,9 @@ export const productQuery = (id: string) =>
 export const settingsQuery = queryOptions({
   queryKey: ["settings"],
   queryFn: async () => {
-    const { data, error } = await supabase.from("store_settings").select("*").eq("id", 1).single();
-    if (error) throw error;
-    return data;
+    const { data, error } = await supabase.rpc("get_store_settings");
+    if (error || !data) throw error ?? new Error("Store settings unavailable.");
+    return data as unknown as Settings;
   },
 });
 
