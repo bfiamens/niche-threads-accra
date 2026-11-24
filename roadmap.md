@@ -38,3 +38,5 @@
 - Contact message and newsletter consent submitted through the UI and confirmed in stored records; test records removed.
 - Phone, tablet and desktop views had no page overflow; 11 focused tests passed.
 - Contacts and quotes are stored in the owner Inbox (More → Database → contact_messages / shipping_quotes); owner email is not sending yet.
+## Reminders
+- [ ] Connect Paystack (owner will connect account later; then build automatic MoMo/card checkout)
