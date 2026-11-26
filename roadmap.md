@@ -13,6 +13,7 @@
 - [x] Document launch information needed and future features.
 
 ## Waiting for owner information
+- [ ] Owner account: nobody is signed up yet, so no one holds owner access. Owner must register with bfiahenoo300i@gmail.com, then be granted owner access.
 - [ ] Launch: real product photos, confirmed stock/prices/sizes, payment contacts, delivery fees/times and English/German policies.
 - [ ] Gift cards: amounts, redemption conditions and expiry policy must be supplied before selling them.
 - [ ] Owner email notifications: verified owned sender domain is required; stored submissions work now.
@@ -40,6 +41,7 @@
 - Back button appears on every page except the home page and returns to the previous page.
 - Order page shows a receipt download in English and German, with payment reference and total.
 - Contact page links (WhatsApp, Instagram, Snapchat, Email, Call) render with correct destinations.
+- Owner area opens for an account with owner access and shows the full "Before opening checkout" checklist; a signed-in customer without owner access is refused.
 - Contacts and quotes are stored in the owner Inbox (More → Database → contact_messages / shipping_quotes); owner email is not sending yet.
 - Receipt line-item list not yet seen in a browser: the launch gate blocked adding a test item while checkout was closed.
 ## Reminders
