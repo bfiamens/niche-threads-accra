@@ -69,7 +69,7 @@ function OrderPage() {
   const stepIdx = STEPS.indexOf(o.status);
   return (
     <section className="wrap max-w-[800px] pt-14 md:pt-20">
-      <div className="mb-3 flex items-center justify-between gap-4"><p className="text-sm text-muted-foreground">{t("order_title")} #{o.order_no} · {new Date(o.created_at).toLocaleDateString()}</p><button type="button" onClick={() => window.print()} className="print:hidden rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary">{t("order_title")==="Order"?"Download receipt":"Beleg herunterladen"}</button></div>
+      <div className="mb-3 flex items-center justify-between gap-4"><p className="text-sm text-muted-foreground">{t("order_title")} #{o.order_no} · {new Date(o.created_at).toLocaleDateString()}</p><button type="button" onClick={() => window.print()} className="print:hidden rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary">{t("download_receipt")}</button></div>
       <h1 className="page-title">{isNew ? t("thanks") : t(`st_${o.status}` as TKey)}</h1>
       {isNew && <p className="mt-4 text-muted-foreground">{t("save_link")}</p>}
 

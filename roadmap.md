@@ -37,6 +37,10 @@
 - Ordinary customer was denied owner access; outfit package read back in the bag.
 - Contact message and newsletter consent submitted through the UI and confirmed in stored records; test records removed.
 - Phone, tablet and desktop views had no page overflow; 11 focused tests passed.
+- Back button appears on every page except the home page and returns to the previous page.
+- Order page shows a receipt download in English and German, with payment reference and total.
+- Contact page links (WhatsApp, Instagram, Snapchat, Email, Call) render with correct destinations.
 - Contacts and quotes are stored in the owner Inbox (More → Database → contact_messages / shipping_quotes); owner email is not sending yet.
+- Receipt line-item list not yet seen in a browser: the launch gate blocked adding a test item while checkout was closed.
 ## Reminders
 - [ ] Connect Paystack (owner will connect account later; then build automatic MoMo/card checkout)
