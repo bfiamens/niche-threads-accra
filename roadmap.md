@@ -14,7 +14,9 @@
 
 ## Waiting for owner information
 - [ ] Owner account: nobody is signed up yet, so no one holds owner access. Owner must register with bfiahenoo300i@gmail.com, then be granted owner access.
-- [ ] Launch: real product photos, confirmed stock/prices/sizes, payment contacts, delivery fees/times and English/German policies.
+- [x] Redesign storefront to the owner's screen designs (split hero, outfit builder band, journal, centred newsletter, simple header/footer).
+- [x] Draft About, Delivery, Returns, Privacy and Terms in English and German (owner to review in Policies).
+- [ ] Launch: real product photos, confirmed stock/prices/sizes, payment contacts and delivery fees/times.
 - [ ] Gift cards: amounts, redemption conditions and expiry policy must be supplied before selling them.
 - [ ] Owner email notifications: verified owned sender domain is required; stored submissions work now.
 - [ ] Newsletter campaigns: dedicated marketing service/account is required; consent collection works now.
